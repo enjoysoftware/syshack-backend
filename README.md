@@ -11,7 +11,7 @@ APIのエンドポイントはポート`8080`番で待機します。
 | GET      | /                          | Hello, World!                                                        |
 | GET      | /users                     | ユーザ全件取得                                                         |
 | GET      | /user/:user_id            | ユーザ１件取得                                                         |
-| POST     | /user                      | ユーザ登録(google_idをPOSTリクエストボディのJSONに含めて送信します) |
+| POST     | /user                      | ユーザ登録(google_idとユーザ名ををPOSTリクエストボディのJSONに含めて送信します) |
 | DELETE   | /user/:user_id            | user_idに指定されたユーザ削除                                          |
 | PUT      | /user/:user_id/administrator |  管理者権限を追加、及び削除します。レスポンスボディのIs_administratorフィールドをtrueまたはfalseに設定することで変更できます。                        |
 | GET      | /kakomons                  | 過去問一覧取得(取得する過去問の条件をGETパラメータで送信してください.複数の指定はできません) |
