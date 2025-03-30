@@ -9,31 +9,31 @@ import (
 
 type User struct {
 	gorm.Model
-	user_id              uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
-	name                 string
-	google_id            string
-	previous_upload_date time.Time
-	is_administrator     bool
-	feeding_butterfly_id int
+	UserID             uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()" json:"user_id"`
+	Name               string    `json:"name"`
+	GoogleID           string    `json:"google_id" gorm:"column:google_id"`
+	PreviousUploadDate time.Time `json:"previous_upload_date"`
+	IsAdministrator    bool      `json:"is_administrator" gorm:"default:false"`
+	CountPost          uint      `json:"count_post" gorm:"default:0"`
+	FeedingButterflyID int       `json:"feeding_butterfly_id" gorm:"column:feeding_butterfly_id"`
 }
 
 type Kakomon struct {
 	gorm.Model
-	id             uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
-	path           string
-	grade          string
-	subject        string
-	year           int
-	major          string
-	title          string
-	upload_user_id uuid.UUID
+	ID           uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()" json:"id"`
+	Path         string    `json:"path"`
+	Grade        string    `json:"grade"`
+	Subject      string    `json:"subject"`
+	Title        string    `json:"title"`
+	Teacher      string    `json:"teacher"`
+	UploadUserID uuid.UUID `json:"upload_user_id"`
 }
 
 type Butterfly struct {
 	gorm.Model
-	id           uuid.UUID `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
-	feed_user_id uuid.UUID
-	growth_stage int
-	color_id     int
-	update_date  time.Time
+	ID          uuid.UUID `gorm:"primaryKey;type:uuid;default:gen_random_uuid()" json:"id"`
+	FeedUserID  uuid.UUID `gorm:"column:feed_user_id" json:"feed_user_id"`
+	GrowthStage int       `json:"growth_stage"`
+	ColorID     int       `json:"color_id"`
+	UpdateDate  time.Time `gorm:"column:update_date" json:"update_date"`
 }
