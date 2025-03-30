@@ -37,3 +37,6 @@ sudo snap install docker
 ```
 docker-compose up  -d --build 
 ```
+
+## アップロードした過去問が入るフォルダ
+`/kakomons`です。この中に過去問UUID.拡張子の形式で入ります。
