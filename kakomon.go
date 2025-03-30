@@ -16,7 +16,66 @@ import (
 
 func GetKakomons(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		grade := ctx.Query("grade")
+		subject := ctx.Query("subject")
+		teacher := ctx.Query("teacher")
 
+		if grade != "" {
+			if subject != "" {
+				if teacher != "" {
+					// grade, subject, teacherが指定されている場合
+					var kakomons []Kakomon
+					result := db.Where("grade = ? AND subject = ? AND teacher = ?", grade, subject, teacher).Find(&kakomons)
+					if result.Error != nil {
+						ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+						return
+					}
+
+					type TitleID struct {
+						ID    uuid.UUID `json:"id"`
+						Title string    `json:"title"`
+					}
+
+					var titleIDs []TitleID
+					for _, kakomon := range kakomons {
+						titleIDs = append(titleIDs, TitleID{ID: kakomon.ID, Title: kakomon.Title})
+					}
+					ctx.JSON(http.StatusOK, titleIDs)
+					return
+
+				} else {
+					// grade, subjectが指定されている場合
+					var teachers []string
+					result := db.Model(&Kakomon{}).Where("grade = ? AND subject = ?", grade, subject).Distinct("teacher").Pluck("teacher", &teachers)
+					if result.Error != nil {
+						ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+						return
+					}
+					ctx.JSON(http.StatusOK, teachers)
+					return
+				}
+			} else {
+				// gradeのみ指定されている場合
+				var subjects []string
+				result := db.Model(&Kakomon{}).Where("grade = ?", grade).Distinct("subject").Pluck("subject", &subjects)
+				if result.Error != nil {
+					ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+					return
+				}
+				ctx.JSON(http.StatusOK, subjects)
+				return
+			}
+		} else {
+			// パラメータが指定されていない場合、gradeのリストを出力
+			var grades []string
+			result := db.Model(&Kakomon{}).Distinct("grade").Pluck("grade", &grades)
+			if result.Error != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+				return
+			}
+			ctx.JSON(http.StatusOK, grades)
+			return
+		}
 	}
 }
 
