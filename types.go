@@ -24,8 +24,10 @@ type Kakomon struct {
 	Path         string    `json:"path"`
 	Grade        string    `json:"grade"`
 	Subject      string    `json:"subject"`
-	Title        string    `json:"title"`
+	Title        string    `json:"title"` //年_専攻_中身名
+	Year         uint      `json:"year"`
 	Teacher      string    `json:"teacher"`
+	Major        string    `json:"major"`
 	UploadUserID uuid.UUID `json:"upload_user_id"`
 }
 
