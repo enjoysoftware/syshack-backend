@@ -26,8 +26,10 @@ func GetUsers(db *gorm.DB) gin.HandlerFunc {
 func GetUser(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var user User
-		id := ctx.Param("user_id")
-		res := db.Where("user_id = ?", id).First(&user)
+
+		id := ctx.Param("google_id")
+		//res := db.Where("google_id = ?", id).First(&user)
+		res := db.First(&user, "google_id = ?", id)
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {
 			fmt.Println("レコードが見つかりませんでした")
 		}

@@ -9,7 +9,7 @@ import (
 func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	r.GET("/", Hello(db))
 	r.GET("/users", GetUsers(db))
-	r.GET("/user/:user_id", GetUser(db))
+	r.GET("/user/:google_id", GetUser(db))
 	r.POST("/user", CreateUser(db))
 	r.DELETE("/user/:user_id", DeleteUser(db))
 	r.PUT("/user/:user_id/administrator", UpdateUserAdministrator(db))
