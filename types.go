@@ -37,5 +37,5 @@ type Butterfly struct {
 	FeedUserID  uuid.UUID `gorm:"column:feed_user_id" json:"feed_user_id"`
 	GrowthStage int       `json:"growth_stage"`
 	ColorID     int       `json:"color_id"`
-	UpdateDate  time.Time `gorm:"column:update_date" json:"update_date"`
+	UpdateDate  time.Time `gorm:"column:update_date;default:now()" json:"update_date"`
 }
