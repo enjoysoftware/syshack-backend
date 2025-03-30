@@ -15,7 +15,7 @@ APIのエンドポイントはポート`8080`番で待機します。
 |            | DELETE   | /user/:user_id            | user_idに指定されたユーザ削除                                          |
 |            | PUT      | /user/:user_id/administrator |  管理者権限を追加、及び削除します。レスポンスボディのIs_administratorフィールドをtrueまたはfalseに設定することで変更できます。                        |
 |            | GET      | /kakomons                  | 過去問一覧取得(取得する過去問の条件をGETパラメータで送信してください.複数の指定はできません) |
-|            | GET      | /kakomon/:id              | 過去問指定取得(指定したidの過去問を取得します)                         |
+|     ⭕️     | GET      | /kakomon/:id              | 過去問指定取得(指定したidの過去問を取得します。これはファイルのダウンロードリンクになります。)                         |
 |     ⭕️     | POST     | /kakomon                   | 過去問登録 次のような形でリクエストを送信してください: `file` : 過去問ファイル本体、`formData` : `{"grade": "B3",   "subject": "線形代数",   "title": "中間試験",   "year": 2024,   "teacher": "山田太郎",   "major": "kk", "upload_user_id" : "アップロードしたユーザのUUIDをここに書く"}`|
 |            | DELETE   | /kakomon/:id              | 指定した過去問を削除します                                               |
 |            | GET      | /butterflies/:feed_user_id | 蝶取得一覧                                                             |

@@ -20,8 +20,34 @@ func GetKakomons(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func GetKakomon(db *gorm.DB) gin.HandlerFunc {
-	return func(ctx *gin.Context) {}
+func GetKakomon(db *gorm.DB) gin.HandlerFunc { //過去問を一つ読み出す
+	return func(ctx *gin.Context) {
+		id := ctx.Param("id")
+
+		var kakomon Kakomon
+		result := db.First(&kakomon, "id = ?", id)
+		if result.Error != nil {
+			if result.Error == gorm.ErrRecordNotFound {
+				ctx.JSON(http.StatusNotFound, gin.H{"error": "Record not found"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+			return
+		}
+		mimeType := "application/octet-stream" // デフォルト値
+		ext := filepath.Ext(kakomon.Path)
+		switch ext {
+		case ".pdf":
+			mimeType = "application/pdf"
+		case ".jpeg", ".jpg":
+			mimeType = "image/jpeg"
+		case ".png":
+			mimeType = "image/png"
+		}
+		ctx.Header("Content-Type", mimeType)
+		ctx.Header("Content-Disposition", "attachment; filename="+kakomon.Title+ext) //ファイル名を正しく
+		ctx.File(kakomon.Path)
+	}
 }
 
 func CreateKakomon(db *gorm.DB) gin.HandlerFunc {
