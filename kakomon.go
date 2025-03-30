@@ -99,5 +99,35 @@ func CreateKakomon(db *gorm.DB) gin.HandlerFunc {
 }
 
 func DeleteKakomon(db *gorm.DB) gin.HandlerFunc {
-	return func(ctx *gin.Context) {}
+	return func(ctx *gin.Context) {
+		idParam := ctx.Param("id")
+
+		id, err := uuid.Parse(idParam)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Invalid UUID format"})
+		}
+
+		var kakomon Kakomon
+		if err := db.Where("id = ?", id).First(&kakomon).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "Record not found!" + kakomon.Path})
+			return
+		}
+
+		fileToDelete := kakomon.Path
+		result := db.Unscoped().Where("id = ?", id).Delete(&Kakomon{}) //論理削除を防ぎ強制的に削除
+		if result.Error != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": result.Error.Error()})
+			return
+		}
+
+		if os.Remove(fileToDelete) != nil {
+			// ファイル削除に失敗した場合でも、データベースからは削除された状態なので、
+			// エラーをログに出力するだけに留めることも検討する。
+			// 例: log.Printf("Failed to delete file: %s, error: %v", fileToDelete, err)
+			// 今回はエラーを返す
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("Failed to delete file: %s, error: %v", fileToDelete, err)})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"message": "OK"})
+	}
 }
