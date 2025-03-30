@@ -16,7 +16,7 @@ APIのエンドポイントはポート`8080`番で待機します。
 | PUT      | /user/:user_id/administrator |  管理者権限を追加、及び削除します。レスポンスボディのIs_administratorフィールドをtrueまたはfalseに設定することで変更できます。                        |
 | GET      | /kakomons                  | 過去問一覧取得(取得する過去問の条件をGETパラメータで送信してください.複数の指定はできません) |
 | GET      | /kakomon/:id              | 過去問指定取得(指定したidの過去問を取得します)                         |
-| POST     | /kakomon                   | 過去問登録(過去問情報はjsonで送信、ファイル本体はmultipart-formdataで送信します) |
+| POST     | /kakomon                   | 過去問登録(過去問情報(学年、教科、先生、年、専攻、中身名)はjsonで送信、ファイル本体はmultipart-formdataで送信します) |
 | DELETE   | /kakomon/:id              | 指定した過去問を削除します                                               |
 | GET      | /butterflies/:feed_user_id | 蝶取得一覧                                                             |
 | GET      | /butterfly/:id            | 蝶指定取得                                                             |
