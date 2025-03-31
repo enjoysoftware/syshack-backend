@@ -160,7 +160,26 @@ func CreateKakomon(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		user.CountPost++
+		// user.FeedingButterflyID
 		db.Save(&user)
+
+		// Create or Update Butterfly
+		var butterfly Butterfly
+		if err := db.Where("feed_user_id = ?", user.UserID).First(&butterfly).Error; err != nil {
+			if err == gorm.ErrRecordNotFound {
+				// Create new butterfly
+				butterfly.FeedUserID = user.UserID
+				db.Create(&butterfly)
+			} else {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
+		} else {
+			// Update existing butterfly
+			butterfly.GrowthStage++
+			db.Save(&butterfly)
+		}
+
 		ctx.JSON(http.StatusOK, kakomonInfo)
 
 	}
