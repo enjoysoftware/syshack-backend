@@ -21,6 +21,6 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 
 	r.GET("/butterflies/:google_id", GetButterflies(db))
 	r.GET("/butterfly/:id", GetButterfly(db))
-	r.POST("/butterfly/:google_id", CreateButterfly(db)) //後でgoogle_idにする必要あるかも？
-	// r.PUT("/butterfly/:id", UpdateButterfly(db))エンドポイントとして提供しない
+	r.POST("/butterfly/:google_id", CreateButterfly(db))
+	r.PUT("/butterfly/:id", UpdateButterfly(db)) //テスト用、通常はエンドポイントとして提供しない
 }

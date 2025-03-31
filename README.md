@@ -21,7 +21,7 @@ APIのエンドポイントはポート`8080`番で待機します。
 |     ⭕️     | GET      | /butterflies/:google_id | 蝶取得一覧 `google_id`で指定されたユーザに紐づく蝶一覧を取得します。サーバからのレスポンス例:`{"butterflies":[{"ID":0,"CreatedAt":"2025-03-30T15:22:33.138147Z","UpdatedAt":"2025-03-30T15:22:33.138147Z","DeletedAt":null,"id":"1a76bc87-cdd3-46e0-998b-78f395c68814","feed_user_id":"ac57f141-0259-408c-9de7-dad41e1a94c2","growth_stage":0,"color_id":0,"update_date":"2025-03-30T15:22:33.138028Z"},{"ID":0,"CreatedAt":"2025-03-30T15:33:30.639609Z","UpdatedAt":"2025-03-30T15:33:30.639609Z","DeletedAt":null,"id":"2e0e9262-9ced-4c74-9f67-70b81f4e63fd","feed_user_id":"ac57f141-0259-408c-9de7-dad41e1a94c2","growth_stage":0,"color_id":0,"update_date":"2025-03-30T15:33:30.639479Z"}]}`                                                            |
 |     ⭕️     | GET      | /butterfly/:id            | 蝶指定取得  idは取得したい蝶のUUIDです。サーバーからのレスポンス例: `{"ID":0,"CreatedAt":"2025-03-30T15:33:30.639609Z","UpdatedAt":"2025-03-30T15:33:30.639609Z","DeletedAt":null,"id":"2e0e9262-9ced-4c74-9f67-70b81f4e63fd","feed_user_id":"ac57f141-0259-408c-9de7-dad41e1a94c2","growth_stage":0,"color_id":0,"update_date":"2025-03-30T15:33:30.639479Z"`                                                           |
 |     ⭕️     | POST     | /butterfly/:google_id           | 蝶登録、`google_id`のユーザに紐づいた蝶を登録します。(成功時はサーバからHTTPステータス200が返ります)                                                           |
-|            | PUT      | /butterfly/:id            | 蝶更新 **通常はAPIから呼ばれません**                                                              |
+|     ⭕️     | PUT      | /butterfly/:id            | 蝶更新 **動作検証用、通常はAPIとしては呼ばれません**                                                              |
 
 
 以上、ざっくりとしたAPIエンドポイントの仕様です。
