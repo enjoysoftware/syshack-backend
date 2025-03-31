@@ -152,6 +152,15 @@ func CreateKakomon(db *gorm.DB) gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 			return
 		}
+		userID := kakomonInfo.UploadUserID
+		var user User
+		if err := db.Where("user_id = ?", userID).First(&user).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+			return
+		}
+
+		user.CountPost++
+		db.Save(&user)
 		ctx.JSON(http.StatusOK, kakomonInfo)
 
 	}
@@ -186,6 +195,17 @@ func DeleteKakomon(db *gorm.DB) gin.HandlerFunc {
 			// 今回はエラーを返す
 			ctx.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("Failed to delete file: %s, error: %v", fileToDelete, err)})
 			return
+		}
+		userID := kakomon.UploadUserID
+		var user User
+		if err := db.Where("user_id = ?", userID).First(&user).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+			return
+		}
+
+		if user.CountPost > 0 {
+			user.CountPost--
+			db.Save(&user)
 		}
 		ctx.JSON(http.StatusOK, gin.H{"message": "OK"})
 	}
